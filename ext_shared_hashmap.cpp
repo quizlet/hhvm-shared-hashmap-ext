@@ -34,15 +34,10 @@ public:
     return hashmap.size();
   }
 
-  bool add(const String& key, const String& value) {
+  bool set(const String& key, const String& value) {
     WriteLock write_lock(hashmap_mutex);
 
-    try {
-      hashmap.at(key.toCppString());
-      return false;
-    } catch (const std::out_of_range& oor) {
-      hashmap[key.toCppString()] = value.toCppString();
-    }
+    hashmap[key.toCppString()] = value.toCppString();
 
     return true;
   }
@@ -92,12 +87,12 @@ static int64_t HHVM_FUNCTION(shhashmap_size, const String& map_name) {
   return shared_hashmap->second->size();
 }
 
-static bool HHVM_FUNCTION(shhashmap_add, const String& map_name, const String& key, const String& value) {
+static bool HHVM_FUNCTION(shhashmap_set, const String& map_name, const String& key, const String& value) {
   ReadLock read_lock(shared_hashmap_mutex);
   std::unordered_map<std::string, SharedHashMap *>::const_iterator shared_hashmap = shared_hashmaps.find(map_name.toCppString());
   if (shared_hashmap == shared_hashmaps.end()) return false;
 
-  return shared_hashmap->second->add(key, value);
+  return shared_hashmap->second->set(key, value);
 }
 
 static Variant HHVM_FUNCTION(shhashmap_get, const String& map_name, const String& key) {
@@ -114,7 +109,7 @@ class SharedHashMapExtension : public Extension {
   virtual void moduleInit() {
     HHVM_FE(shhashmap_init);
     HHVM_FE(shhashmap_size);
-    HHVM_FE(shhashmap_add);
+    HHVM_FE(shhashmap_set);
     HHVM_FE(shhashmap_get);
     loadSystemlib();
   }
