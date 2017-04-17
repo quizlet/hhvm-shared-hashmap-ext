@@ -36,7 +36,15 @@ public:
 
   bool add(const String& key, const String& value) {
     WriteLock write_lock(hashmap_mutex);
-    hashmap.add(key.toCppString(), value.toCppString());
+
+    try {
+      hashmap.at(key.toCppString());
+      return false;
+    } catch (const std::out_of_range& oor) {
+      hashmap[key.toCppString()] = value.toCppString();
+    }
+
+    return true;
   }
 
   Variant get(const String& key) {
