@@ -7,7 +7,7 @@ function shhashmap_init(string $map_name): bool;
 function shhashmap_size(string $map_name): int;
 
 <<__Native>>
-function shhashmap_add(string $map_name, string $key, string $value): bool;
+function shhashmap_set(string $map_name, string $key, string $value): bool;
 
 <<__Native>>
 function shhashmap_get(string $map_name, string $key): ?string;
@@ -31,8 +31,8 @@ class SharedHashMap {
 	}
 
 	// This will add a row into the hash map with the given value
-	public function add(string $key, string $value): bool {
-		return shhashmap_add($this->name, $key, $value);
+	public function set(string $key, string $value): bool {
+		return shhashmap_set($this->name, $key, $value);
 	}
 
 	// This will return the value at the given key
