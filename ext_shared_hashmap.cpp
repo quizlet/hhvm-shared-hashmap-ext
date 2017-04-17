@@ -52,6 +52,12 @@ public:
       return Variant(Variant::NullInit{});
     }
   }
+
+  bool erase(const String& key) {
+    WriteLock write_lock(hashmap_mutex);
+
+    return hashmap.erase(key.toCppString());
+  }
 };
 
 static ReadWriteMutex shared_hashmap_mutex;
@@ -103,6 +109,14 @@ static Variant HHVM_FUNCTION(shhashmap_get, const String& map_name, const String
   return shared_hashmap->second->get(key);
 }
 
+static bool HHVM_FUNCTION(shhashmap_delete, const String& map_name, const String& key) {
+  ReadLock read_lock(shared_hashmap_mutex);
+  std::unordered_map<std::string, SharedHashMap *>::const_iterator shared_hashmap = shared_hashmaps.find(map_name.toCppString());
+  if (shared_hashmap == shared_hashmaps.end()) return false;
+
+  return shared_hashmap->second->erase(key);
+}
+
 class SharedHashMapExtension : public Extension {
  public:
   SharedHashMapExtension() : Extension("shared_hashmap") {}
@@ -111,6 +125,7 @@ class SharedHashMapExtension : public Extension {
     HHVM_FE(shhashmap_size);
     HHVM_FE(shhashmap_set);
     HHVM_FE(shhashmap_get);
+    HHVM_FE(shhashmap_delete);
     loadSystemlib();
   }
 } s_shared_hashmap_extension;

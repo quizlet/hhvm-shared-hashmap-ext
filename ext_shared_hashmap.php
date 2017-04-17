@@ -12,6 +12,9 @@ function shhashmap_add(string $map_name, string $key, string $value): bool;
 <<__Native>>
 function shhashmap_get(string $map_name, string $key): ?string;
 
+<<__Native>>
+function shhashmap_delete(string $map_name, string $key): bool;
+
 class SharedHashMap {
 
 	/*
@@ -35,5 +38,10 @@ class SharedHashMap {
 	// This will return the value at the given key
 	public function get(string $key): ?string {
 		return shhashmap_get($this->name, $key);
+	}
+
+	// This will delete a row from the hash map with the given key
+	public function delete(string $key): bool {
+		return shhashmap_delete($this->name, $key);
 	}
 }
