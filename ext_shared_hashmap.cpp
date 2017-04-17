@@ -97,9 +97,7 @@ static bool HHVM_FUNCTION(shhashmap_add, const String& map_name, const String& k
   std::unordered_map<std::string, SharedHashMap *>::const_iterator shared_hashmap = shared_hashmaps.find(map_name.toCppString());
   if (shared_hashmap == shared_hashmaps.end()) return false;
 
-  shared_hashmap->second->add(key, value);
-
-  return true;
+  return shared_hashmap->second->add(key, value);
 }
 
 static Variant HHVM_FUNCTION(shhashmap_get, const String& map_name, const String& key) {

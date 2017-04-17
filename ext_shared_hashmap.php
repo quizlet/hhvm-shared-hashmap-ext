@@ -29,11 +29,11 @@ class SharedHashMap {
 
 	// This will add a row into the hash map with the given value
 	public function add(string $key, string $value): bool {
-		return shhashmap_add($key, $value);
+		return shhashmap_add($this->name, $key, $value);
 	}
 
 	// This will return the value at the given key
 	public function get(string $key): ?string {
-		return shhashmap_get($key);
+		return shhashmap_get($this->name, $key);
 	}
 }
