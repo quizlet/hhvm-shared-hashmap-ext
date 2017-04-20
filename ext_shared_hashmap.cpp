@@ -105,10 +105,10 @@ static void HHVM_FUNCTION(shhashmap_close, const String& map_name) {
   ReadLock write_lock(shared_hashmap_mutex);
   const std::string  cpp_map_name = map_name.toCppString();
   std::unordered_map<std::string, SharedHashMap *>::const_iterator shared_hashmap = shared_hashmaps.find(cpp_map_name);
-  if (shared_hashmap == shared_hashmaps.end()) return false;
+  if (shared_hashmap == shared_hashmaps.end()) return;
 
+  delete shared_hashmap->second;
   shared_hashmaps.erase(cpp_map_name);
-  delete shared_hashmap;
 }
 
 class SharedHashMapExtension : public Extension {
