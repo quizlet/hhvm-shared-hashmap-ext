@@ -72,7 +72,7 @@ static bool HHVM_FUNCTION(shhashmap_init, const String& name) {
 static Variant HHVM_FUNCTION(shhashmap_size, const String& map_name) {
   ReadLock read_lock(shared_hashmap_mutex);
   std::unordered_map<std::string, SharedHashMap *>::const_iterator shared_hashmap = shared_hashmaps.find(map_name.toCppString());
-  if (shared_hashmap == shared_hashmaps.end()) return Variant(null);
+  if (shared_hashmap == shared_hashmaps.end()) return Variant(Variant::NullInit{});
 
   return shared_hashmap->second->size();
 }
@@ -88,7 +88,7 @@ static bool HHVM_FUNCTION(shhashmap_set, const String& map_name, const String& k
 static Variant HHVM_FUNCTION(shhashmap_get, const String& map_name, const String& key) {
   ReadLock read_lock(shared_hashmap_mutex);
   std::unordered_map<std::string, SharedHashMap *>::const_iterator shared_hashmap = shared_hashmaps.find(map_name.toCppString());
-  if (shared_hashmap == shared_hashmaps.end()) return Variant(null);
+  if (shared_hashmap == shared_hashmaps.end()) return Variant(Variant::NullInit{});
 
   return shared_hashmap->second->get(key);
 }
