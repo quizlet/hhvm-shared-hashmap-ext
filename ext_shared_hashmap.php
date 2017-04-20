@@ -24,7 +24,7 @@ class SharedHashMap {
 	 * This will create a shared hash map if it does not already exist, accessible between threads.
 	 * If it does exist then it won't do anything. This is a fast operation.
 	 */
-	public function __construct(private string $name) {
+	public function __construct(private ?string $name) {
 		shhashmap_init($name);
 	}
 
