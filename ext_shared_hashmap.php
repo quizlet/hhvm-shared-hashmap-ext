@@ -4,7 +4,7 @@
 function shhashmap_init(string $map_name): bool;
 
 <<__Native>>
-function shhashmap_size(string $map_name): int;
+function shhashmap_size(string $map_name): ?int;
 
 <<__Native>>
 function shhashmap_set(string $map_name, string $key, string $value): bool;
@@ -34,7 +34,7 @@ class SharedHashMap {
 	}
 
 	// This will return the current size of the hash map
-	public function size(): int {
+	public function size(): ?int {
 		return shhashmap_size($this->name);
 	}
 
