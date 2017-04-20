@@ -15,6 +15,9 @@ function shhashmap_get(string $map_name, string $key): ?string;
 <<__Native>>
 function shhashmap_delete(string $map_name, string $key): bool;
 
+<<__Native>>
+function shhashmap_close(string $map_name): void;
+
 class SharedHashMap {
 
 	/*
@@ -23,6 +26,11 @@ class SharedHashMap {
 	 */
 	public function __construct(private string $name) {
 		shhashmap_init($name);
+	}
+
+	// Returns the name of this hash map
+	public function getName(): string {
+		return $this->name;
 	}
 
 	// This will return the current size of the hash map
@@ -43,5 +51,10 @@ class SharedHashMap {
 	// This will delete a row from the hash map with the given key
 	public function delete(string $key): bool {
 		return shhashmap_delete($this->name, $key);
+	}
+
+	// This will close the hashmap, freeing its correlated memory
+	public function close(): bool {
+		return shhashmap_close($this->name);
 	}
 }

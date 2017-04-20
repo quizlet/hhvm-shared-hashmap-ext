@@ -101,6 +101,16 @@ static bool HHVM_FUNCTION(shhashmap_delete, const String& map_name, const String
   return shared_hashmap->second->erase(key);
 }
 
+static void HHVM_FUNCTION(shhashmap_close, const String& map_name) {
+  ReadLock write_lock(shared_hashmap_mutex);
+  const std::string cpp_map_name.toCppString()
+  std::unordered_map<std::string, SharedHashMap *>::const_iterator shared_hashmap = shared_hashmaps.find(cpp_map_name);
+  if (shared_hashmap == shared_hashmaps.end()) return false;
+
+  shared_hashmaps.erase(cpp_map_name);
+  delete shared_hashmap;
+}
+
 class SharedHashMapExtension : public Extension {
  public:
   SharedHashMapExtension() : Extension("shared_hashmap") {}
@@ -110,6 +120,7 @@ class SharedHashMapExtension : public Extension {
     HHVM_FE(shhashmap_set);
     HHVM_FE(shhashmap_get);
     HHVM_FE(shhashmap_delete);
+    HHVM_FE(shhashmap_close);
     loadSystemlib();
   }
 } s_shared_hashmap_extension;
