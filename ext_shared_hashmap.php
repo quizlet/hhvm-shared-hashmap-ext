@@ -29,7 +29,7 @@ class SharedHashMap {
 	}
 
 	// Returns the name of this hash map
-	public function getName(): string {
+	public function getName(): ?string {
 		return $this->name;
 	}
 
