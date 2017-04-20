@@ -54,7 +54,7 @@ class SharedHashMap {
 	}
 
 	// This will close the hashmap, freeing its correlated memory
-	public function close(): bool {
-		return shhashmap_close($this->name);
+	public function close(): void {
+		shhashmap_close($this->name);
 	}
 }
